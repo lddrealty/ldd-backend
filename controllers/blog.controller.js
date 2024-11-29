@@ -5,7 +5,7 @@ const { IMGBB_API } = process.env;
 class BlogController {
   getAllBlogs = async (req, res) => {
     try {
-      const blogs = await Blog.find();
+      const blogs = await Blog.find().sort({ createdAt: -1 });
       res.status(200).json(blogs);
     } catch (error) {
       console.log({ error });
@@ -28,8 +28,7 @@ class BlogController {
 
   createBlog = async (req, res) => {
     try {
-      const { title, content } = req.body;
-      const author = req.user.id;
+      const { title, content, author } = req.body;
       const files = req.files;
       let thumbnail;
       if (files && files.length > 0) {

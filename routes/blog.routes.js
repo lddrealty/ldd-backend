@@ -8,7 +8,7 @@ const upload = require("../middlewares/multer.middleware"); // No 'default', jus
 router.get("/", BlogController.getAllBlogs);
 router.get("/:id", BlogController.getBlogById);
 
-router.post("/", [upload.any(),Auth], BlogController.createBlog);
+router.post("/", [upload.any()], BlogController.createBlog);
 
 router.put("/:id", [Auth], BlogController.updateBlog);
 
