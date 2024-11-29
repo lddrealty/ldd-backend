@@ -11,9 +11,20 @@ const bodyParser = require("body-parser");
 const { BlogRouter } = require("./routes/blog.routes");
 const { UserRouter } = require("./routes/user.routes");
 const { ContactRouter } = require("./routes/contact.routes");
+const { default: helmet } = require("helmet");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const app = express();
 
+// Middleware
+app.use(helmet());
+app.use(
+  cors({
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 app.use(morgan("tiny"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
