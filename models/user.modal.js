@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const Hasher = require("../helpers/Hasher.helper");
+const Hasher = require("../helpers/hasher.helper");
 const { JWT_SECRET, JWT_EMAIL_VERIFY_SECRET } = process.env;
 
 const Schema = new mongoose.Schema(

@@ -1,4 +1,4 @@
-const HasherHelper = require("../helpers/Hasher.helper");
+const HasherHelper = require("../helpers/hasher.helper");
 const { User } = require("../models/user.modal");
 
 class UserController {
