@@ -68,6 +68,9 @@ cron.schedule("0 * * * *", () => {
 });
 
 // Routes
+app.get("/", (req, res) => {
+  return res.status(200).json({ message: "OK" });
+});
 app.use("/api/blogs", BlogRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/contact", ContactRouter);
