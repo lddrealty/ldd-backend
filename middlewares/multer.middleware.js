@@ -6,14 +6,14 @@ const fs = require("fs");
 // --- Storage Configuration ---
 const storage = diskStorage({
   destination: async (req, file, cb) => {
-    const uploadDir = path.join(__dirname, "../tmp");
+    const uploadDir = "/tmp"; // Use /tmp for temporary storage in Vercel
 
     try {
-      await fs.promises.mkdir(uploadDir, { recursive: true });
-      cb(null, uploadDir);
+      await fs.promises.mkdir(uploadDir, { recursive: true }); // Ensure directory exists
+      cb(null, uploadDir); // Pass the directory to multer
     } catch (err) {
       console.error("Error creating upload directory:", err);
-      cb(err);
+      cb(err); // Pass error to multer
     }
   },
 
@@ -21,8 +21,8 @@ const storage = diskStorage({
     const sanitizedFilename = file.originalname.replace(
       /[^a-zA-Z0-9_.-]/g,
       "_"
-    );
-    cb(null, `${Date.now()}-${sanitizedFilename}`);
+    ); // Sanitize file name
+    cb(null, `${Date.now()}-${sanitizedFilename}`); // Add timestamp to avoid conflicts
   },
 });
 
@@ -34,11 +34,10 @@ const upload = multer({
     const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
     console.log("File MIME Type:", file.mimetype); // Log MIME type
     if (!allowedMimeTypes.includes(file.mimetype)) {
-      return cb(new Error("Invalid file type"));
+      return cb(new Error("Invalid file type")); // Reject invalid files
     }
-    cb(null, true);
+    cb(null, true); // Accept valid files
   },
-  
 });
 
 // Named export (not default)
