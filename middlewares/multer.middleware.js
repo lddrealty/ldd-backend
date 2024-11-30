@@ -6,7 +6,7 @@ const fs = require("fs");
 // --- Storage Configuration ---
 const storage = diskStorage({
   destination: async (req, file, cb) => {
-    const uploadDir = path.join(__dirname, "../uploads");
+    const uploadDir = path.join(__dirname, "../temp");
 
     try {
       await fs.promises.mkdir(uploadDir, { recursive: true });
