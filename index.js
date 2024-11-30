@@ -40,11 +40,11 @@ mongoose
 
 cron.schedule("0 * * * *", () => {
   // Runs every hour on the hour
-  const uploadDir = path.join(__dirname, "./temp");
+  const uploadDir = path.join(__dirname, "./tmp");
 
   fs.readdir(uploadDir, (err, files) => {
     if (err) {
-      console.error("Error reading temp folder:", err.message);
+      console.error("Error reading tmp folder:", err.message);
       return;
     }
 
@@ -62,7 +62,7 @@ cron.schedule("0 * * * *", () => {
         });
       });
     } else {
-      console.log("No files to delete in the temp folder.");
+      console.log("No files to delete in the tmp folder.");
     }
   });
 });
