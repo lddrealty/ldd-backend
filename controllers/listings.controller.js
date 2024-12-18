@@ -36,9 +36,9 @@ class ListingController {
   // Create a new listing
   createListing = async (req, res) => {
     try {
-      const dataToSave = JSON.parse(req.body.data);
+    
 
-      // const dataToSave = req.body;
+      const dataToSave = req.body;
       const { files } = req;
 
       dataToSave.listingId = generateListingId();
