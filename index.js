@@ -18,10 +18,21 @@ const cors = require("cors");
 
 const app = express();
 
+const allowedOrigin = [
+  "http://localhost:3000",
+  "http://127.0.0.1:5501", // Added new origin
+  "https://sujalcodecraft.github.io", // Added new origin
+];
+
 // Middleware
 app.use(helmet());
 app.use(
   cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigin.includes(origin)) return callback(null, true);
+      else callback(new Error("cors origin error " + origin));
+    },
     credentials: true,
   })
 );

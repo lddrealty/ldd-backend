@@ -3,19 +3,12 @@ const { JWT_SECRET } = process.env;
 
 module.exports.Auth = async (req, res, next) => {
   const token = req.cookies?.accessToken;
+
   if (!token) {
     return res.status(401).json({ error: "no token provided" });
   }
-  const splitToken = token.split(" ")[1];
-  // console.info({token})
-  if (splitToken && splitToken === "null") {
-    return res.status(401).send({
-      error: true,
-      result: null,
-      message: "UnAuthorized",
-    });
-  }
-  const decodedData = jwt.verify(splitToken, JWT_SECRET);
+
+  const decodedData = jwt.verify(token, JWT_SECRET);
   req.user = decodedData;
 
   if (req.body.data) {

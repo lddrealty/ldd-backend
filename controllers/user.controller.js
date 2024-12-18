@@ -23,6 +23,7 @@ class UserController {
       });
 
       const userData = {
+        id: user._id,
         email: user.email,
         role: user.role,
         createdAt: user.createdAt,
@@ -31,11 +32,8 @@ class UserController {
 
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
-        secure:
-          process.env.NODE_ENV === "production" ||
-          process.env.NODE_ENV === "staging",
-        sameSite: process.env.NODE_ENV === "development" ? "Strict" : "None",
-        maxAge: 30 * 24 * 60 * 60 * 1000,
+        secure: true,
+        sameSite: "None",
       });
 
       res.status(201).json({
@@ -70,11 +68,19 @@ class UserController {
       });
 
       const userData = {
+        id: user._id,
         email: user.email,
         role: user.role,
         createdAt: user.createdAt,
         name: user.name,
       };
+
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      });
+
       res.status(201).json({
         accessToken,
         user: userData,
