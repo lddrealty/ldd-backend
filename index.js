@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 const { BlogRouter } = require("./routes/blog.routes");
 const { UserRouter } = require("./routes/user.routes");
 const { ContactRouter } = require("./routes/contact.routes");
+const { listingRouter } = require("./routes/listings.routes");
 const { default: helmet } = require("helmet");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -74,6 +75,7 @@ app.get("/", (req, res) => {
 app.use("/api/blogs", BlogRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/contact", ContactRouter);
+app.use("/api/listing", listingRouter);
 
 app.use((err, req, res, next) => {
   console.error("Error middleware:", err.message);

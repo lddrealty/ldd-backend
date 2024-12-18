@@ -1,6 +1,4 @@
 const Blog = require("../models/blog.model");
-const imgbbUploader = require("imgbb-uploader");
-const { IMGBB_API } = process.env;
 
 class BlogController {
   getAllBlogs = async (req, res) => {
@@ -28,21 +26,12 @@ class BlogController {
 
   createBlog = async (req, res) => {
     try {
-      const { title, content, author } = req.body;
+      const dataToSave = req.body;
       const files = req.files;
-      let thumbnail;
       if (files && files.length > 0) {
-        try {
-          const response = await imgbbUploader(IMGBB_API, files[0].path);
-          thumbnail = response.image.url;
-        } catch (error) {
-          console.error(error);
-          return res
-            .status(500)
-            .json({ error: "Error uploading image to imgbb" });
-        }
+        await handleFileUploads(files, "none", "media", dataToSave);
       }
-      const blog = new Blog({ title, content, author, thumbnail });
+      const blog = new Blog(dataToSave);
       await blog.save();
       res.status(201).json(blog);
     } catch (error) {
@@ -63,21 +52,8 @@ class BlogController {
       }
 
       const files = req.files;
-      let thumbnail;
       if (files && files.length > 0) {
-        try {
-          const response = await imgbbUploader(IMGBB_API, files[0].path);
-          thumbnail = response.image.url;
-        } catch (error) {
-          console.error(error);
-          return res
-            .status(500)
-            .json({ error: "Error uploading image to imgbb" });
-        }
-      }
-
-      if (thumbnail) {
-        blog.thumbnail = thumbnail;
+        await handleFileUploads(files, "none", "media", blog);
       }
 
       await blog.save();
