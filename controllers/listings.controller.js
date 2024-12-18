@@ -1,6 +1,12 @@
 const Listing = require("../models/listings.model");
 const { handleFileUploads } = require("../utils/fileUploader");
 
+function generateListingId() {
+  const prefix = "LST";
+  const uniqueNumber = Math.floor(Math.random() * 100000); // Random number from 0 to 99999
+  return prefix + uniqueNumber.toString().padStart(5, "0"); // Ensure 5 digits with leading zeros
+}
+
 class ListingController {
   // Get all listings
   getAllListings = async (req, res) => {
@@ -34,6 +40,8 @@ class ListingController {
 
       // const dataToSave = req.body;
       const { files } = req;
+
+      dataToSave.listingId = generateListingId();
 
       if (files && files.length > 0) {
         await handleFileUploads(files, "none", "media", dataToSave, true);
