@@ -1,10 +1,22 @@
 const Contact = require("../models/contact.model");
+const createFilter = require("../utils/createFilter");
 
 class ContactController {
   getAllContacts = async (req, res) => {
     try {
-      const contacts = await Contact.find();
-      res.status(200).json(contacts);
+      const { options } = createFilter(req.query);
+
+      const data = await Contact.paginate({}, options);
+
+      return res.status(200).json({
+        message: "All Contact Fetched successful",
+        data: data.docs,
+        totalDocs: data.totalDocs,
+        totalPages: data.totalPages,
+        currentPage: data.page,
+        hasNextPage: data.hasNextPage,
+        hasPrevPage: data.hasPrevPage,
+      });
     } catch (error) {
       console.log({ error });
       res.status(500).json({ error: error.message });
@@ -26,8 +38,8 @@ class ContactController {
 
   createContact = async (req, res) => {
     try {
-      const { name, email, subject, message } = req.body;
-      const contact = new Contact({ name, email, subject, message });
+      console.log(req.body);
+      const contact = new Contact(req.body);
       await contact.save();
       res.status(201).json(contact);
     } catch (error) {

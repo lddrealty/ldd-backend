@@ -1,10 +1,24 @@
 const Blog = require("../models/blog.model");
+const createFilter = require("../utils/createFilter");
+const handleFileRemovalAndUploads = require("../utils/deleteCloudinaryImage");
+const { handleFileUploads } = require("../utils/fileUploader");
 
 class BlogController {
   getAllBlogs = async (req, res) => {
     try {
-      const blogs = await Blog.find().sort({ createdAt: -1 });
-      res.status(200).json(blogs);
+      const { options } = createFilter(req.query);
+
+      const data = await Blog.paginate({}, options);
+
+      return res.status(200).json({
+        message: "All Blogs Fetched successful",
+        data: data.docs,
+        totalDocs: data.totalDocs,
+        totalPages: data.totalPages,
+        currentPage: data.page,
+        hasNextPage: data.hasNextPage,
+        hasPrevPage: data.hasPrevPage,
+      });
     } catch (error) {
       console.log({ error });
       res.status(500).json({ error: error.message });
@@ -27,6 +41,9 @@ class BlogController {
   createBlog = async (req, res) => {
     try {
       const dataToSave = req.body;
+
+      console.log(dataToSave);
+
       const files = req.files;
       if (files && files.length > 0) {
         await handleFileUploads(files, "none", "media", dataToSave);
@@ -42,6 +59,7 @@ class BlogController {
 
   updateBlog = async (req, res) => {
     try {
+      const dataToSave = req.body;
       const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true,
@@ -50,11 +68,18 @@ class BlogController {
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
       }
+      console.log(blog.media);
 
       const files = req.files;
       if (files && files.length > 0) {
+        await handleFileRemovalAndUploads(blog, {
+          filesToRemove: blog.media,
+          stringTargetKeys: ["media"],
+        });
         await handleFileUploads(files, "none", "media", blog);
       }
+
+      console.log(blog.media);
 
       await blog.save();
 
@@ -67,12 +92,18 @@ class BlogController {
 
   deleteBlog = async (req, res) => {
     try {
-      const blog = await Blog.findByIdAndUpdate(req.params.id, {
-        deactivated: true,
-      });
+      const blog = await Blog.findByIdAndDelete(req.params.id);
+
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
       }
+
+      if (blog.media && blog.media !== null) {
+        await handleFileRemovalAndUploads(blog, {
+          filesToRemove: blog.media,
+        });
+      }
+
       res.status(200).json({ message: "Blog deleted successfully" });
     } catch (error) {
       console.log({ error });

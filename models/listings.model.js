@@ -1,35 +1,19 @@
 const mongoose = require("mongoose");
-
+const mongoosePaginate = require("mongoose-paginate-v2");
 const listingSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-    },
-    map: {
-      type: String,
-    },
-    listingId: {
-      type: String,
-    },
-    price: {
-      type: String,
-    },
-    bedrooms: {
-      type: Number,
-    },
+    title: String,
+    map: String,
+    listingId: String,
+    price: String,
+    bedrooms: Number,
     additionalRooms: {
       type: String,
       default: null,
     },
-    bathrooms: {
-      type: Number,
-    },
-    area: {
-      type: String, // Could be a string to include both value and unit (e.g., "440 Sq.Yd.")
-    },
-    furnishingStatus: {
-      type: String, // Semi-Furnished, Fully Furnished, etc.
-    },
+    bathrooms: Number,
+    area: String,
+    furnishingStatus: String,
     facing: {
       type: String,
       default: null,
@@ -75,46 +59,26 @@ const listingSchema = new mongoose.Schema(
       default: [],
     },
     location: {
-      city: {
-        type: String,
-      },
-      locality: {
-        type: String,
-      },
+      city: String,
+      locality: String,
       microMarket: {
         type: String,
         default: null,
       },
     },
     propertyDetails: {
-      listingType: {
-        type: String, // e.g., "Sale", "Rent"
-      },
-      buildingType: {
-        type: String, // e.g., "Residential", "Commercial"
-      },
-      propertyType: {
-        type: String, // e.g., "Builder Floor"
-      },
+      listingType: String,
+      buildingType: String,
+      propertyType: String,
     },
     contactOptions: {
-      whatsapp: {
-        type: Boolean,
-        default: true,
-      },
-      requestCall: {
-        type: Boolean,
-        default: true,
-      },
-    },
-    reportLink: {
-      type: String, // Link to report issues with the listing
-      default: null,
+      whatsapp: String,
+      phone: String,
     },
   },
   {
     timestamps: true,
   }
 );
-
+listingSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model("Listing", listingSchema);

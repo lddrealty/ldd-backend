@@ -23,7 +23,7 @@ async function imageUpload(imageFiles) {
     try {
       // Upload the image to Cloudinary
       const uploadResult = await cloudinary.uploader.upload(filePath, {
-        folder: "famliya",
+        folder: "ldd",
         resource_type: "auto",
       });
       imagePathArray.push(uploadResult.secure_url);

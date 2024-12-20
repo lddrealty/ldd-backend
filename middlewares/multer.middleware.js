@@ -31,11 +31,11 @@ const upload = multer({
   storage,
   limits: { fileSize: 1024 * 1024 * 10 }, // Optional: 10MB file size limit
   fileFilter: (req, file, cb) => {
-    const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
+    // const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
     console.log("File MIME Type:", file.mimetype); // Log MIME type
-    if (!allowedMimeTypes.includes(file.mimetype)) {
-      return cb(new Error("Invalid file type")); // Reject invalid files
-    }
+    // if (!allowedMimeTypes.includes(file.mimetype)) {
+    //   return cb(new Error("Invalid file type")); // Reject invalid files
+    // }
     cb(null, true); // Accept valid files
   },
 });

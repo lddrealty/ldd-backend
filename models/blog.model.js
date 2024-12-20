@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const blogSchema = new mongoose.Schema(
   {
@@ -21,6 +22,9 @@ const blogSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+blogSchema.plugin(mongoosePaginate);
+
 
 blogSchema.pre(["find", "findOne", "findById"], function () {
   const { getAll = false } = this.options;

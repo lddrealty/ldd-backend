@@ -1,4 +1,6 @@
 const Listing = require("../models/listings.model");
+const createFilter = require("../utils/createFilter");
+const handleFileRemovalAndUploads = require("../utils/deleteCloudinaryImage");
 const { handleFileUploads } = require("../utils/fileUploader");
 
 function generateListingId() {
@@ -11,8 +13,19 @@ class ListingController {
   // Get all listings
   getAllListings = async (req, res) => {
     try {
-      const listings = await Listing.find().sort({ createdAt: -1 });
-      res.status(200).json(listings);
+      const { options } = createFilter(req.query);
+
+      const data = await Listing.paginate({}, options);
+
+      return res.status(200).json({
+        message: "All Listings Fetched successful",
+        data: data.docs,
+        totalDocs: data.totalDocs,
+        totalPages: data.totalPages,
+        currentPage: data.page,
+        hasNextPage: data.hasNextPage,
+        hasPrevPage: data.hasPrevPage,
+      });
     } catch (error) {
       console.error({ error });
       res.status(500).json({ error: error.message });
@@ -36,8 +49,6 @@ class ListingController {
   // Create a new listing
   createListing = async (req, res) => {
     try {
-    
-
       const dataToSave = req.body;
       const { files } = req;
 
@@ -61,6 +72,7 @@ class ListingController {
   // Update listing by ID
   updateListing = async (req, res) => {
     try {
+      const dataToSave = req.body;
       const updatedListing = await Listing.findByIdAndUpdate(
         req.params.id,
         req.body,
@@ -69,6 +81,19 @@ class ListingController {
       if (!updatedListing) {
         return res.status(404).json({ message: "Listing not found" });
       }
+
+      if (dataToSave.imagesToRemove && dataToSave.imagesToRemove !== null) {
+        await handleFileRemovalAndUploads(updatedListing, {
+          filesToRemove: dataToSave.imagesToRemove,
+          arrayTargetKeys: ["media"],
+        });
+      }
+      const files = req.files;
+      if (files && files.length > 0) {
+        await handleFileUploads(files, "none", "media", updatedListing, true);
+      }
+
+      await updatedListing.save();
       res.status(200).json(updatedListing);
     } catch (error) {
       console.error({ error });
@@ -98,6 +123,11 @@ class ListingController {
       const deletedListing = await Listing.findByIdAndDelete(req.params.id);
       if (!deletedListing) {
         return res.status(404).json({ message: "Listing not found" });
+      }
+      if (deletedListing.media && deletedListing.media !== null) {
+        await handleFileRemovalAndUploads(deletedListing, {
+          filesToRemove: deletedListing.media,
+        });
       }
       res.status(200).json({ message: "Listing deleted successfully" });
     } catch (error) {
