@@ -21,6 +21,7 @@ const app = express();
 
 const allowedOrigin = [
   "http://localhost:3000",
+  "http://127.0.0.1:5500", // Added new origin
   "http://127.0.0.1:5501", // Added new origin
   "http://127.0.0.1:5502", // Added new origin
   "http://127.0.0.1:5503", // Added new origin
