@@ -3,7 +3,7 @@ const router = express.Router();
 
 const BannerController = require("../controllers/banner.controller");
 const { Auth } = require("../middlewares/auth.middleware");
-const upload = require("../middlewares/multer.middleware"); // No 'default', just require
+const {upload} = require("../utils/fileUploader"); // No 'default', just require
 router.get("/", BannerController.getAllBanners);
 router.post("/", [upload.any("photos"), Auth], BannerController.createBanner);
 

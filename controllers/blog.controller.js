@@ -44,7 +44,8 @@ class BlogController {
 
       console.log(dataToSave);
 
-      const files = req.files;
+      const {files} = req;
+    console.log({files})
       if (files && files.length > 0) {
         await handleFileUploads(files, "none", "media", dataToSave);
       }

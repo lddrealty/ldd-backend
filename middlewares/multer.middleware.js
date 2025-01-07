@@ -41,4 +41,4 @@ const upload = multer({
 });
 
 // Named export (not default)
-module.exports = upload;
+// module.exports = upload;

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ListingController = require("../controllers/listings.controller");
-const upload = require("../middlewares/multer.middleware");
+const {upload} = require("../utils/fileUploader");
 const { Auth } = require("../middlewares/auth.middleware");
 router.get("/", ListingController.getAllListings);
 router.get("/:id", ListingController.getListingById);
