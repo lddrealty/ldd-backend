@@ -31,7 +31,11 @@ const allowedOrigin = [
 app.use(helmet());
 app.use(
   cors({
-    origin: "*",
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigin.includes(origin)) return callback(null, true);
+      else callback(new Error("cors origin error " + origin));
+    },
     credentials: true,
   })
 );
