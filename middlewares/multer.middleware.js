@@ -6,7 +6,7 @@ const fs = require("fs");
 // --- Storage Configuration ---
 const storage = diskStorage({
   destination: async (req, file, cb) => {
-    const uploadDir = "./tmp"; // Use /tmp for temporary storage in Vercel
+    const uploadDir = "./temp"; // Use /tmp for temporary storage in Vercel
 
     try {
       await fs.promises.mkdir(uploadDir, { recursive: true }); // Ensure directory exists
