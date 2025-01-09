@@ -79,6 +79,7 @@ class UserController {
         httpOnly: true,
         secure: true,
         sameSite: "None",
+        domain: ".lddrealty.com",
       });
 
       res.status(201).json({

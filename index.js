@@ -20,14 +20,22 @@ const cors = require("cors");
 const app = express();
 
 const allowedOrigin = [
-  "lddrealty.com",
-  "www.lddrealty.com",
-  "localhost:3000",
-  "127.0.0.1:5500",
-  "127.0.0.1:5501",
-  "127.0.0.1:5502",
-  "127.0.0.1:5503",
-  "sujalcodecraft.github.io",
+  
+  "https://lddrealty.com",
+  "https://www.lddrealty.com",
+  "http://localhost:3000",
+  "http://127.0.0.1:5500", // Added new origin
+  "http://127.0.0.1:5501", // Added new origin
+  "http://127.0.0.1:5502", // Added new origin
+  "http://127.0.0.1:5503", // Added new origin
+  "https://sujalcodecraft.github.io", // Added new origin
+  "https://lddrealty.com/index.html",
+  "http://localhost:3000/index.html",
+  "http://127.0.0.1:5500/index.html", // Added new origin
+  "http://127.0.0.1:5501/index.html", // Added new origin
+  "http://127.0.0.1:5502/index.html", // Added new origin
+  "http://127.0.0.1:5503/index.html", // Added new origin
+  "https://sujalcodecraft.github.io/index.html", // Added new origin
 ];
 
 // Middleware
