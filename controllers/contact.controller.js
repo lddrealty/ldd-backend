@@ -40,7 +40,12 @@ class ContactController {
   createContact = async (req, res) => {
     try {
       console.log(req.body);
-      const contact = new Contact(req.body);
+      const { propertyType = "", message, ...data } = req.body;
+      const dataToSave = {
+        ...data,
+        message: `${propertyType} ${message}`,
+      };
+      const contact = new Contact(dataToSave);
       await contact.save();
 
       // await sendMail({
