@@ -58,8 +58,9 @@ class UserController {
       const { generateToken } = user.schema.methods;
 
       const isVerify = await HasherHelper.compare(password, user.password);
-      if (!isVerify)
+      if (!isVerify) {
         return res.status(401).json({ message: "Incorrect Password" });
+      }
 
       const accessToken = generateToken({
         _id: user._id,

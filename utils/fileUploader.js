@@ -31,6 +31,7 @@ async function imageUpload(files) {
           .upload_stream(
             {
               resource_type: "auto", // Auto detect file type (image, video, etc.)
+              folder: "ldd",
             },
             (error, result) => {
               if (error) {
