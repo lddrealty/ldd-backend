@@ -79,8 +79,9 @@ class UserController {
         httpOnly: true,
         secure: true,
         sameSite: "None",
-        domain: ".lddrealty.com",
       });
+
+      console.log("Setting cookie for:", req.hostname);
 
       res.status(201).json({
         accessToken,
