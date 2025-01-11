@@ -48,14 +48,14 @@ class ContactController {
       const contact = new Contact(dataToSave);
       await contact.save();
 
-      // await sendMail({
-      //   context: {
-      //     name: contact?.name,
-      //     email: contact?.email,
-      //     message: contact?.message,
-      //     phone: contact?.phone,
-      //   },
-      // });
+      await sendMail({
+        context: {
+          name: contact?.name,
+          email: contact?.email,
+          message: contact?.message,
+          phone: contact?.phone,
+        },
+      });
       res.status(201).json(contact);
     } catch (error) {
       console.log({ error });

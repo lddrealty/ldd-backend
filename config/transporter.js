@@ -16,8 +16,8 @@ const transporter = nodemailer.createTransport({
 // Function to send emails
 const sendMail = async (data) => {
   const {
-    from = "LDD Real State <nk105000@gmail.com>", // Default sender
-    to = "nk105000@gmail.com", // Default recipient
+    from = `LDD Real State <${process.env.MAIL_USER}>`, // Default sender
+    to = `${process.env.MAIL_USER}`, // Default recipient
     subject = "Contact Information", // Default subject
     templatePath = path.resolve(__dirname, "../utils/templates/contact.html"), // Template file path
     context = {}, // Data to replace in the template
@@ -43,7 +43,7 @@ const sendMail = async (data) => {
     return info;
   } catch (error) {
     console.error("Error sending email:", error);
-    throw error;
+    // throw error;
   }
 };
 
